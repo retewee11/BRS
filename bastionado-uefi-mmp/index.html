@@ -1,0 +1,144 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Bastionado de BIOS UEFI</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="bastionado-uefi-mmp"
+                  title="Bastionado de BIOS UEFI"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Introducción" duration="0">
+        <h2 is-upgraded>¿Porque hacer un bastionado de la UEFI?</h2>
+<p>Hacer un bastionado de la UEFI es fundamental porque protege el arranque del sistema desde el nivel más bajo, evitando que malware o ataques avanzados comprometan el firmware antes de que cargue el sistema operativo.</p>
+<h2 is-upgraded>¿Como entrar a la UEFI?</h2>
+<p>Dependiendo del equipo y el fabricante hay que pulsar una tecla distinta suelen ser teclas tipo: esc, supr, F9, etc...</p>
+<p class="image-container"><img alt="Imagen de la UEFI" src="img\\48afe8749a5d4938.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Asignación de contraseñas" duration="0">
+        <p>El primer paso y el más importante es establecer una contraseña para la UEFI, ya que si hacemos todos los pasos que vamos a hacer pero no protegemos la UEFI con una contraseña, cualquiera podría entrar y resetear toda la configuración y no valdría de nada todo el bastionado.</p>
+<p>Para ello entraremos en el apartado de Security y veremos lo siguiente:</p>
+<p class="image-container"><img alt="Imagen de la sección security de la UEFI" src="img\\a743c6007afedf37.png"></p>
+<p>Aquí haremos click en password y veremos lo siguiente:</p>
+<p class="image-container"><img alt="Imagen de password" src="img\\b16c36581391965a.png"></p>
+<p>Aquí lo primero que tenemos que modificar son las 2 ultimas opciones, para obligar a la hora de elegir una contraseña que te controle estas 2 cosas, no es algo obligatorio, pero evita futuros despistes:</p>
+<ul>
+<li>Set Minimum Length: En esta opción podemos elegir el minimo de caracteres para las contraseñas en este caso, como se verá en la proxima imagén elijo minimo 12 caracteres.</li>
+<li>Set Strong Password: Esta opción comprueba por tí si la contraseña que has elegido es fuerte.</li>
+</ul>
+<p class="image-container"><img alt="Imagen de las opciones activadas" src="img\\e998d3cc066b2ef0.png"></p>
+<p>Ahora vamos a asignar las contraseñas en este caso veremos muchos tipos de contraseñas distintas:</p>
+<ul>
+<li>Supervisor Password: Esta contraseña es la usada para cada vez que se quiera entrar en la UEFI, es la más importante ya que es la base de todo, por lo tanto esta contraseña hay que establecerla.</li>
+</ul>
+<p class="image-container"><img alt="Establecer contraseña" src="img\\e3f9cba0de7de17f.png"></p>
+<ul>
+<li>System Management Password: Esta contraseña se usa para el tema empresarial, por si hay distintos roles de IT que tienen que hacer cosas distintas, que cada uno tenga su propia contraseña y solo acceda a lo que debe de acceder, en este caso no nos hará falta.</li>
+<li>Power-On Password: Esta contraseña es la usada para cada vez que el ordenador se enciende, es una contraseña que pide antes de empezar a arrancar nada, esta contraseña se asignara o no dependiendo de lo que se quiera complicar el uso diario al que usa el equipo, si es un equipo critico, sin duda habría que establecerla.</li>
+<li>NVMe1 Password: Esta contraseña es para acceder a discos duros concretos, si el uso del equipo es compartido y hay información sensible en disco concreto podría establecerse.</li>
+</ul>
+<p>Para todo esto es super importante el uso de contraseñas distintas y que las contraseñas sean fuertes ya que, de nada vale poner una contraseña si es el nombre y apellido por ejemplo de quien lo usa.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Secure boot" duration="0">
+        <p>En la ventana de security ahora iremos a Secure boot Y veremos lo siguiente:</p>
+<p class="image-container"><img alt="Secure boot" src="img\\fbf7dfae9a396608.png"></p>
+<p>Secure Boot es una función de la UEFI que asegura que solo el software firmado y autorizado por el fabricante puede arrancar el equipo. Su objetivo principal es impedir la ejecución de bootloaders, sistemas operativos o controladores no autorizados y, por tanto, proteger el sistema frente a malware a nivel de arranque (como rootkits).</p>
+<p>Cuando Secure Boot está activado:</p>
+<ul>
+<li>La UEFI verifica la firma digital de cada componente antes de cargarlo durante el arranque.</li>
+<li>Si detecta un componente no firmado o manipulado, bloquea su ejecución.</li>
+<li>Solo se permite arrancar sistemas y controladores que hayan sido aprobados y firmados previamente.</li>
+</ul>
+<p>Este mecanismo aporta una capa de seguridad clave contra amenazas avanzadas que buscan persistir antes del sistema operativo.</p>
+<p>Es muy importante verificar que está activo.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="TPM 2.0" duration="0">
+        <h2 is-upgraded>¿Que es el tpm 2.0?</h2>
+<p>TPM 2.0 es un chip de seguridad en la placa base que almacena y protege claves de cifrado, contraseñas y certificados digitales, ayudando a proteger el sistema contra accesos no autorizados y malware. <img alt="TPM" src="img\\d12dfc2fdabc0244.png"></p>
+<h2 is-upgraded>Comprobaciones</h2>
+<ul>
+<li>Comprobar que el TPM 2.0 este activado.</li>
+<li>Comprobar que Physical Presence for Clear, esto exige presencia física para borrar el chip, añadiendo una barrera contra ataques remotos o scripts automatizados.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Configuración de arranque seguro" duration="0">
+        <p class="image-container"><img alt="Opciones de arranque" src="img\\7c387fb303c9ea48.png"></p>
+<h2 is-upgraded>¿Que hacer aquí?</h2>
+<ol type="1">
+<li><strong>Deshabilita arranques innecesarios</strong><ul>
+<li>En &#34;Network Boot&#34; selecciona la opción más restrictiva (por ejemplo, desactiva PXE Boot si no usas arranque por red).</li>
+</ul>
+</li>
+<li><strong>Oculta opciones de arranque manuales</strong><ul>
+<li>Desactiva &#34;Option key Display&#34; y &#34;Boot device List F12 Option&#34; para que no puedan tocar el orden de arranque sin acceso a la UEFI. <img alt="Opciones de arranque manuales" src="img\\5a6bc7de9c1c5847.png"></li>
+</ul>
+</li>
+<li><strong>Establece y bloquea el orden de arranque</strong><ul>
+<li>Configura el orden de dispositivos para arrancar primero desde disco interno.</li>
+<li>Activa &#34;Boot Order Lock&#34; (si está disponible) para impedir que se cambie sin entrar a la configuración protegida. <img alt="Boot order lock" src="img\\f5d7536ef097cbca.png"></li>
+</ul>
+</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Guardar cambios y salir de la UEFI" duration="0">
+        <p>Una vez aplicados todos los ajustes de bastionado, es fundamental guardar la configuración antes de reiniciar el sistema:</p>
+<ol type="1">
+<li>Revisa que todos los parámetros modificados estén correctamente configurados.</li>
+<li>Utiliza la opción &#34;Save and Exit&#34; (normalmente con la tecla <strong>F10</strong>) para guardar los cambios y reiniciar el equipo.</li>
+<li>No apagues el sistema antes de guardar; los cambios se perderían.</li>
+<li>Tras reiniciar, verifica que las opciones estén activas y los cambios persistan.</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tips finales" duration="0">
+        <p>Recuerda que, aunque el bastionado UEFI es una medida de seguridad efectiva, cualquier acceso físico al equipo puede permitir la manipulación o borrado de la configuración de la BIOS/UEFI, anulando estas protecciones. Por eso, es fundamental complementar la seguridad lógica con controles físicos y auditorías periódicas.</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

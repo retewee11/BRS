@@ -1,0 +1,24 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2025-11-11T20:20:37+01:00",
+  "id": "bastionado-uefi-mmp",
+  "duration": 0,
+  "title": "Bastionado de BIOS UEFI",
+  "summary": "En este codelabs explicaré el paso a paso de un bastionado de una uefi",
+  "source": ".\\proyecto1.1\\codelabs.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "codelab",
+    "markdown"
+  ],
+  "tags": [
+    "web"
+  ],
+  "url": "bastionado-uefi-mmp"
+}
